@@ -1,14 +1,19 @@
 package com.example.intenty;
 
+import android.Manifest;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -18,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonNavigate;
     TextView imie;
     Button notificationButton;
+    public static final String CHANNEL_ID = "my_channel_id"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +39,27 @@ public class MainActivity extends AppCompatActivity {
         });
         String message = getIntent().getStringExtra("imie");
         imie.setText(message);
-        notificationButton.setOnClickListener(v -> {
-            sendNotification();
-        });
     }
-    private void sendNotification() {
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Kanał Powiadomień";
+            String description = "Opis kanału powiadomień";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+        }
+    }
+    private void sendNotification(Context context) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if(context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+                return;
+            }
+        }
+
         Intent intent = new Intent(this, MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
