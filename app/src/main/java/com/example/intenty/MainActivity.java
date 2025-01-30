@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonNavigate;
     TextView imie;
     Button notificationButton;
-    public static final String CHANNEL_ID = "my_channel_id"
+    public static final String CHANNEL_ID = "my_channel_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
         });
         String message = getIntent().getStringExtra("imie");
         imie.setText(message);
+        notificationButton.setOnClickListener(v -> {
+            NotificationHelper.sendNotification(this, this, "Tytuł", "Wiadomość", 2, R.drawable.notification, R.raw.dzwonek);
+        });
     }
-    private void createNotificationChannel() {
+    public void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Kanał Powiadomień";
             String description = "Opis kanału powiadomień";
@@ -52,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-    private void sendNotification(Context context) {
+    public void sendNotification(Context context) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if(context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
                 return;
             }
         }
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle("Nowe powiadomienie")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText("Lorem ipsum"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContent(pendingIntent)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 

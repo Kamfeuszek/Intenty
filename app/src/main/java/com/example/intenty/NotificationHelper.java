@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,16 +22,16 @@ public class NotificationHelper {
     private static final String CHANNEL_NAME = "Kanał Powiadomień";
     private static final int NOTIFICATION_ID = 1;
 
-    private static void sendNotification(AppCompatActivity activity, Context context, String title, String message, int styleType) {
+    public static void sendNotification(AppCompatActivity activity, Context context, String title, String message, int styleType, Integer largeIconResID, Integer sound) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if(ContextCompat.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if(context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
                 return;
             }
         }
         NotificationManager notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.0) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
@@ -39,6 +41,14 @@ public class NotificationHelper {
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
+        if(largeIconResID != null){
+            Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), largeIconResID);
+            builder.setLargeIcon(largeIcon);
+        }
+        if(sound != null) {
+            Uri soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + sound);
+            builder.setSound(soundUri);
+        }
         switch (styleType) {
             case 1:
                 builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
@@ -54,5 +64,6 @@ public class NotificationHelper {
                 builder.setStyle(inboxStyle);
                 break;
         }
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 }
