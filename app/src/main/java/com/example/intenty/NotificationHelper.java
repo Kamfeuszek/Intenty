@@ -49,7 +49,10 @@ public class NotificationHelper {
                 break;
             case 3:
                 NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-
+                inboxStyle.addLine(message);
+                inboxStyle.addLine("Dodano linie tekstu");
+                builder.setStyle(inboxStyle);
+                break;
         }
     }
 }
