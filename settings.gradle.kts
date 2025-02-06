@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Intenty"
+rootProject.name = "Notyfikacje"
 include(":app")
  
