@@ -30,20 +30,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        NotificationHelper.createNotificationChannels(this);
         notificationButton = findViewById(R.id.notificationButton);
         notificationButton2 = findViewById(R.id.notificationButton2);
         notificationButton3 = findViewById(R.id.notificationButton3);
 
         notificationButton.setOnClickListener(v -> {
-            NotificationHelper.sendNotification(ID,this, this, "Tytuł", "Wiadomość", NotificationCompat.PRIORITY_DEFAULT , 1, R.drawable.notification, R.raw.dzwonek);
+            NotificationHelper.sendNotification(ID, NotificationHelper.CHANNEL_ID_LOW,this, this, "Tytuł", "Wiadomość", 1, R.drawable.notification, R.raw.dzwonek);
             ID++;
         });
         notificationButton2.setOnClickListener(v -> {
-            NotificationHelper.sendNotification(ID,this, this, "Tytuł2", "Wiadomość2", NotificationCompat.PRIORITY_MIN ,2, R.drawable.notification, R.raw.dzwonek);
+            NotificationHelper.sendNotification(ID, NotificationHelper.CHANNEL_ID_DEFAULT ,this, this, "Tytuł2", "Wiadomość2",2, R.drawable.notification, R.raw.dzwonek);
             ID++;
         });
         notificationButton3.setOnClickListener(v -> {
-            NotificationHelper.sendNotification(ID,this, this, "Tytuł3", "Wiadomość3", NotificationCompat.PRIORITY_MAX ,3, R.drawable.notification, R.raw.dzwonek);
+            NotificationHelper.sendNotification(ID, NotificationHelper.CHANNEL_ID_HIGH ,this, this, "Tytuł3", "Wiadomość3" ,3, R.drawable.notification, R.raw.dzwonek);
             ID++;
         });
     }
