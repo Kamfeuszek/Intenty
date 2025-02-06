@@ -13,21 +13,20 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
         <Button
-            android:id="@+id/buttonNavigate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Przejdź do drugiej aktywności"
-            android:layout_gravity="center"
-            tools:ignore="MissingConstraints" />
-        <TextView
-            android:id="@+id/imie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
             android:id="@+id/notificationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Powiadomienie" />
+        <Button
+            android:id="@+id/notificationButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Powiadomienie2" />
+        <Button
+            android:id="@+id/notificationButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Powiadomienie3" />
     </LinearLayout>
 
 

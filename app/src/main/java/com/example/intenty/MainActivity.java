@@ -19,28 +19,32 @@ import androidx.core.app.NotificationManagerCompat;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    Button buttonNavigate;
-    TextView imie;
     Button notificationButton;
+    Button notificationButton2;
+    Button notificationButton3;
     public static final String CHANNEL_ID = "my_channel_id";
+    private int ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        buttonNavigate = findViewById(R.id.buttonNavigate);
-        imie = findViewById(R.id.imie);
+
         notificationButton = findViewById(R.id.notificationButton);
-        buttonNavigate.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-            intent.putExtra("message", "Witaj z MainActivity!");
-            startActivity(intent);
-        });
-        String message = getIntent().getStringExtra("imie");
-        imie.setText(message);
+        notificationButton2 = findViewById(R.id.notificationButton2);
+        notificationButton3 = findViewById(R.id.notificationButton3);
+
         notificationButton.setOnClickListener(v -> {
-            NotificationHelper.sendNotification(this, this, "Tytuł", "Wiadomość", 2, R.drawable.notification, R.raw.dzwonek);
+            NotificationHelper.sendNotification(ID,this, this, "Tytuł", "Wiadomość", NotificationCompat.PRIORITY_DEFAULT , 1, R.drawable.notification, R.raw.dzwonek);
+            ID++;
+        });
+        notificationButton2.setOnClickListener(v -> {
+            NotificationHelper.sendNotification(ID,this, this, "Tytuł2", "Wiadomość2", NotificationCompat.PRIORITY_MIN ,2, R.drawable.notification, R.raw.dzwonek);
+            ID++;
+        });
+        notificationButton3.setOnClickListener(v -> {
+            NotificationHelper.sendNotification(ID,this, this, "Tytuł3", "Wiadomość3", NotificationCompat.PRIORITY_MAX ,3, R.drawable.notification, R.raw.dzwonek);
+            ID++;
         });
     }
     public void createNotificationChannel() {

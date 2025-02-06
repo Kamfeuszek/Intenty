@@ -20,9 +20,8 @@ import androidx.core.content.ContextCompat;
 public class NotificationHelper {
     private static final String CHANNEL_ID = "default_channel";
     private static final String CHANNEL_NAME = "Kanał Powiadomień";
-    private static final int NOTIFICATION_ID = 1;
 
-    public static void sendNotification(AppCompatActivity activity, Context context, String title, String message, int styleType, Integer largeIconResID, Integer sound) {
+    public static void sendNotification(int NOTIFICATION_ID, AppCompatActivity activity, Context context, String title, String message, int priority, int styleType, Integer largeIconResID, Integer sound) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if(context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
@@ -39,7 +38,7 @@ public class NotificationHelper {
                 .setSmallIcon(R.drawable.notification)
                 .setContentTitle(title)
                 .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(priority)
                 .setAutoCancel(true);
         if(largeIconResID != null){
             Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), largeIconResID);
